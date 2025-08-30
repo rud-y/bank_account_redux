@@ -1,5 +1,13 @@
+:root {
+ --background: rgb(20, 20, 20); 
+ --headings-color: rgb(255,140,0);
+}
+
 body {
+  background-color: var(--background);
+  color: whitesmoke;
   margin: 0;
+  padding: 0.5rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -7,10 +15,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2 {
+ color: var(--headings-color) !important;
+ text-align: center;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+
 }
+
 
 .inputs {
   display: flex;
@@ -45,4 +60,3 @@ code {
   grid-column: 2 / 3; /* start in the second column */
   margin-top: 5px;
 }
-

@@ -1,17 +1,20 @@
 import AccountOperations from "./AccountOperations";
 import BalanceDisplay from "./BalanceDisplay";
-import CreateCustsomer from "./CreateCustomer";
+import CreateCustomer from "./CreateCustomer";
 import Customer from "./Customer";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-       <h1>Account</h1>
-       <AccountOperations />
-       <CreateCustsomer />
-       <Customer />
-       <BalanceDisplay />
+        <h1>Bank Account</h1>
+        <>
+          <span>Balance: </span>
+          <BalanceDisplay />
+        </>
+        <CreateCustomer />
+        <Customer />
+        <AccountOperations />
       </header>
     </div>
   );
