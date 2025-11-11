@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createCustomer } from "./customerSlice";
-
+import store from "../../store"
 
 function Customer() {
   const [fullName, setFullName] = useState("");
@@ -9,16 +9,15 @@ function Customer() {
 
   const dispatch = useDispatch();
 
-  function handleClick() {
+  function handleNewCustomer() {
    if(!fullName || !nationalId) return;
 
-   dispatch(createCustomer({ fullName, ID: nationalId }));
+   dispatch(createCustomer({ fullName, ID: nationalId } ));
+   console.log(store.getState())
 
-   
-   // setFullName("")
-   // setNationalId("")
+   setFullName("")
+   setNationalId("")
   }
-  console.log("fullName:", fullName, "nationalId:", nationalId);
 
 
   return (
@@ -39,7 +38,7 @@ function Customer() {
             onChange={(e) => setNationalId(e.target.value)}
           />
         </div>
-        <button onClick={handleClick}>Create new customer</button>
+        <button onClick={handleNewCustomer}>Create new customer</button>
       </div>
     </div>
   );

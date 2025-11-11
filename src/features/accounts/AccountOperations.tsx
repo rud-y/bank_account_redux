@@ -1,19 +1,61 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deposit, payLoan, requestLoan, withdraw } from "./accountSlice";
+import store from '../../store';
+import ModalWarning from "./ModalWarning";
 
 function AccountOperations() {
-  const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawalAmount, setWithdrawalAmount] = useState("");
-  const [loanAmount, setLoanAmount] = useState("");
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [withdrawalAmount, setWithdrawalAmount] = useState(0);
+  const [loanAmount, setLoanAmount] = useState(0);
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("USD");
+  const [warning, setWarning] = useState("");
 
-  function handleDeposit() {}
+  const dispatch = useDispatch();
 
-  function handleWithdrawal() {}
+  const {loan: currentLoan, loanPurpose: currentLoanPurpose, balance } = useSelector((store: any) => store.account);
 
-  function handleRequestLoan() {}
+  const account = useSelector((state: any) => state.account);
 
-  function handlePayLoan() {}
+  console.log('STATE OF ACCOUNT ...', account.balance)
+
+
+  function handleDeposit() {
+   if (!depositAmount) return;
+
+   dispatch(deposit(depositAmount));
+   setDepositAmount(0);
+   const cs = store.getState();
+   console.log('STATE CURRENT ', cs)
+  }
+
+  function handleWithdrawal() {
+   if (!withdrawalAmount) return;
+
+   if (withdrawalAmount > balance) {
+    setWarning("You cannot withdraw more than the remaining balance amount.");
+    return
+   }
+
+   if (withdrawalAmount <= balance) {
+     dispatch(withdraw(withdrawalAmount));
+     setWithdrawalAmount(0);
+   }
+  }
+
+  function handleRequestLoan() {
+   if (!loanAmount || !loanPurpose) return;
+
+   dispatch(requestLoan(loanAmount, loanPurpose));
+   setLoanAmount(0);
+   setLoanPurpose("");
+  }
+ 
+
+  function handlePayLoan() {
+   dispatch(payLoan());
+  }
 
   return (
     <div>
@@ -24,7 +66,7 @@ function AccountOperations() {
           <input
             type="number"
             value={depositAmount}
-            onChange={(e) => setDepositAmount(e.target.value)}
+            onChange={(e) => setDepositAmount(Number(e.target.value))}
           />
           <select
             value={currency}
@@ -43,7 +85,7 @@ function AccountOperations() {
           <input
             type="number"
             value={withdrawalAmount}
-            onChange={(e) => setWithdrawalAmount(e.target.value)}
+            onChange={(e) => setWithdrawalAmount(Number(e.target.value))}
           />
           <button onClick={handleWithdrawal}>
             Withdraw {withdrawalAmount}
@@ -55,7 +97,7 @@ function AccountOperations() {
           <input
             type="number"
             value={loanAmount}
-            onChange={(e) => setLoanAmount(e.target.value)}
+            onChange={(e) => setLoanAmount(Number(e.target.value))}
             placeholder="Loan amount"
           />
           <input

@@ -41,15 +41,15 @@ export default function accountReducer(state = initialState, action: any) {
   }
 }
 
-export function deposit(amount: Number) {
+export function deposit(amount: number) {
   return { type: "account/deposit", payload: amount };
 }
 
-export function withdraw(amount: Number) {
+export function withdraw(amount: number) {
   return { type: "account/withdrawal", payload: amount };
 }
 
-export function requestLoan(loanAmount: Number, loanPurpose: String) {
+export function requestLoan(loanAmount: number, loanPurpose: string) {
   return { type: "account/requestLoan", payload: { loanAmount, loanPurpose } };
 }
 

@@ -6,15 +6,15 @@ import Customer from "./features/customers/Customer";
 
 
 function App() {
- const fullName = useSelector((store: any) => store.dispatch.fullName)
-
+ const fullName = useSelector((store: any) => store.customer.fullName);
+ 
   return (
     <div className="App">
-      <header className="App-header">
+      
         <h1>Bank Account</h1>
         {fullName === "" ? (
           <CreateCustomer />
-        ) : (
+         ) : ( 
           <div>
             <>
               <span>Balance: </span>
@@ -24,7 +24,6 @@ function App() {
             <AccountOperations />
           </div>
         )}
-      </header>
     </div>
   );
 }
