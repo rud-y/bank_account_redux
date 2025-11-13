@@ -16,9 +16,7 @@ function AccountOperations() {
 
   const {loan: currentLoan, loanPurpose: currentLoanPurpose, balance } = useSelector((store: any) => store.account);
 
-  const account = useSelector((state: any) => state.account);
-
-  console.log('STATE OF ACCOUNT ...', account.balance)
+  console.log('STATE OF ACCOUNT ...', balance)
 
 
   function handleDeposit() {
@@ -107,11 +105,12 @@ function AccountOperations() {
           />
           <button onClick={handleRequestLoan}>Request loan</button>
         </div>
-
-        <div>
-          <span>Pay back $X</span>
-          <button onClick={handlePayLoan}>Pay loan</button>
-        </div>
+        {currentLoan > 0 && 
+          <div>
+            <span>Pay back $X</span>
+            <button onClick={handlePayLoan}>Pay loan</button>
+          </div>
+        }
       </div>
     </div>
   );
