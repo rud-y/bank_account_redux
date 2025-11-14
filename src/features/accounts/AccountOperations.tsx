@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deposit, payLoan, requestLoan, withdraw } from "./accountSlice";
-import store from '../../store';
-import ModalWarning from "./ModalWarning";
+import store, { AppDispatch, useAppDispatch } from '../../store';
+// import ModalWarning from "./ModalWarning";
 
 function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState(0);
@@ -12,9 +12,9 @@ function AccountOperations() {
   const [currency, setCurrency] = useState("USD");
   const [warning, setWarning] = useState("");
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch<AppDispatch>();
 
-  const {loan: currentLoan, loanPurpose: currentLoanPurpose, balance } = useSelector((store: any) => store.account);
+  const {loan: currentLoan, loanPurpose: currentLoanPurpose, balance, isLoading } = useSelector((store: any) => store.account);
 
   console.log('STATE OF ACCOUNT ...', balance)
 
@@ -22,10 +22,9 @@ function AccountOperations() {
   function handleDeposit() {
    if (!depositAmount) return;
 
-   dispatch(deposit(depositAmount));
+   dispatch(deposit(depositAmount, currency));
    setDepositAmount(0);
-   const cs = store.getState();
-   console.log('STATE CURRENT ', cs)
+   setCurrency("")
   }
 
   function handleWithdrawal() {
@@ -75,20 +74,24 @@ function AccountOperations() {
             <option value="GBP">British Pound</option>
           </select>
 
-          <button onClick={handleDeposit}>Deposit {depositAmount}</button>
+          <button onClick={handleDeposit} disabled={isLoading}>{isLoading ? "Converting currency" : `Deposit ${depositAmount}`}</button>
         </div>
 
-        <div>
-          <label>Withdraw</label>
-          <input
-            type="number"
-            value={withdrawalAmount}
-            onChange={(e) => setWithdrawalAmount(Number(e.target.value))}
-          />
-          <button onClick={handleWithdrawal}>
-            Withdraw {withdrawalAmount}
-          </button>
-        </div>
+        {/* {warning && (
+          <ModalWarning children={warning} />
+        )} */}
+        {warning && (<p style={{color: 'red'}}>Warning withdrawal too high!</p>)}
+          <div>
+            <label>Withdraw</label>
+            <input
+              // type="number"
+              value={withdrawalAmount}
+              onChange={(e) => setWithdrawalAmount(Number(e.target.value))}
+            />
+            <button onClick={handleWithdrawal}>
+              Withdraw {withdrawalAmount}
+            </button>
+          </div>
 
         <div>
           <label>Request loan</label>
@@ -105,12 +108,12 @@ function AccountOperations() {
           />
           <button onClick={handleRequestLoan}>Request loan</button>
         </div>
-        {currentLoan > 0 && 
+        {currentLoan > 0 && (
           <div>
             <span>Pay back $X</span>
             <button onClick={handlePayLoan}>Pay loan</button>
           </div>
-        }
+        )}
       </div>
     </div>
   );
