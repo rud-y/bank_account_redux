@@ -1,4 +1,3 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch } from "../../store";
 
 // Account
@@ -28,7 +27,7 @@ export default function accountReducer(state = initialState, action: any) {
       return {
         ...state,
         loan: action.payload,
-        balance: (state.balance += action.payload.loanAmount),
+        balance: (state.balance + action.payload.loanAmount),
       };
 
     case "account/payLoan":
@@ -62,25 +61,10 @@ export function deposit(amount: number, currency: string) {
 
     const data = await res.json();
     const usdConverted = data.rates.USD
-    console.log("DATA FRANKFURTER: ", data);
-    console.log("DATA in USD:  ", usdConverted);
-
+    
     dispatch({ type: "account/deposit", payload: usdConverted})
   };
 }
-
-// export const deposit = createAsyncThunk(
-//   "account/deposit",
-//   async ({ amount, currency }: { amount: number; currency: string }) => {
-//     if (currency === "USD") return amount;
-
-//     const res = await fetch(
-//       `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
-//     );
-//     const data = await res.json();
-//     return data.rates.USD;
-//   }
-// );
 
 export function withdraw(amount: number) {
   return { type: "account/withdrawal", payload: amount };
