@@ -108,10 +108,10 @@ const rootReducer = combineReducers({
 });
 const store = createStore(rootReducer);
 
-store.dispatch(createCustomer({ fullName: 'Rud Zee', ID:'1234' }));
-console.log(store.getState())
+// store.dispatch(createCustomer({ fullName: 'Rud Zee', ID:'1234' }));
+// console.log(store.getState())
 
-store.dispatch(deposit(700));
-console.log(store.getState());
+// store.dispatch(deposit(700));
+// console.log(store.getState());
 
 
