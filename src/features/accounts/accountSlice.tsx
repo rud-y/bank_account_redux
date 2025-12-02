@@ -35,7 +35,7 @@ export default function accountReducer(state = initialState, action: any) {
       return {
         ...state,
         balance: state.balance - state.loan,
-        loan: 0,
+        loan: "",
         loanPurpose: "",
       };
 
@@ -51,19 +51,19 @@ export default function accountReducer(state = initialState, action: any) {
 }
 
 export function deposit(amount: number, currency: string) {
-  if (currency === "USD") return { type: "account/deposit", payload: amount };
+  if (currency === "GBP") return { type: "account/deposit", payload: amount };
 
   return async function (dispatch: AppDispatch, getState: any) {
    dispatch({ type: "account/convertingCurrency"})
     // API call
     const res = await fetch(
-      `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
+      `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=GBP`
     );
 
     const data = await res.json();
-    const usdConverted = data.rates.USD
+    const gbpConverted = data.rates.GBP
     
-    dispatch({ type: "account/deposit", payload: usdConverted})
+    dispatch({ type: "account/deposit", payload: gbpConverted})
   };
 }
 
